@@ -8,14 +8,49 @@ $(".add").on('click', function(){
 	// console.log("place: ", $place);
 
 	var $itineraryItem = '<div class="itinerary-item"><span class="title">' + $place + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>';
-
 	var $listCategory = "#" + $category + "-list";
-	console.log($listCategory);
+	//console.log($listCategory);
+
+	// if (!$('#hotel-list').children()) {
+	// 	$($listCategory).append($itineraryItem);	
+	// }
+
+
+	function verifyDuplicate() {
+		var match = false;
+
+		$($listCategory).children().each(function() {
+			var span = $(this).find('span').text();
+
+			if ($place === span) {
+				match = true;
+			}
+		});
+
+		if (match === false) {
+			$($listCategory).append($itineraryItem);	
+		}
+	}
+
+
+
+	if ($listCategory === '#hotel-list' && $($listCategory).children().length === 0) {
+		$($listCategory).append($itineraryItem);	
+	}
+	else if ($listCategory === '#food-list' && $($listCategory).children().length < 3) {
+		verifyDuplicate();
+	}
+	else if ($listCategory === '#things-list') {
+		verifyDuplicate();	
+	}
+
+
+
 
 
 	// find the category in the list
 	// append $itineraryItem
-	$($listCategory).append($itineraryItem);
+	
 
 
 });
