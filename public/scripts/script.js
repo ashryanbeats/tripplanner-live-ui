@@ -1,4 +1,4 @@
-var mapGenerator = function(mapLocation){
+var mapGenerator = function(mapLocation){ //converts place string coordinates into array of numbers
 	var $mapCoord = mapLocation.split(',');
 	var $mapCoord0 = Number($mapCoord[0]);
 	var $mapCoord1 = Number($mapCoord[1]);
@@ -19,10 +19,10 @@ $(".add").on('click', function(){
 	var $itineraryItem = '<div class="itinerary-item"><span class="title">' + $place + '</span><button value="' +$mapC+'" class="btn btn-xs btn-danger remove btn-circle">x</button></div>';
 	var $listCategory = "#" + $category + "-list";
 
-	function verifyDuplicate() {
+	function verifyDuplicate() { //confirms if already added place
 		var match = false;
 
-		$($listCategory).children().each(function() {
+		$($listCategory).children().each(function() { 
 			var span = $(this).find('span').text();
 
 			if ($place === span) {
@@ -37,15 +37,15 @@ $(".add").on('click', function(){
 
 	if ($listCategory === '#hotel-list' && $($listCategory).children().length === 0) {
 		$($listCategory).append($itineraryItem);
-		updateHotelMarker($mapC);	
+		updateHotelMarker($mapC);	//adds hotel location - only one per day & no duplicates
 	}
 	else if ($listCategory === '#food-list' && $($listCategory).children().length < 3) {
 		verifyDuplicate();
-		updateFoodMarkers($mapC);
+		updateFoodMarkers($mapC); //adds restaurants - only 3 per day & no duplicates
 	}
 	else if ($listCategory === '#things-list') {
 		verifyDuplicate();	
-		updateThingMarkers($mapC);
+		updateThingMarkers($mapC); //adds things to do - no duplicates
 	}	
 });
 
@@ -53,8 +53,7 @@ $(".add").on('click', function(){
 $(".list-group").delegate('.remove', 'click', function(){
 	var $place = $(this).attr('value');
 	var $mapC = mapGenerator($place);
-	
-	console.log($mapC);
-	$(this).parent().remove();
+
+	$(this).parent().remove(); //removes button & itinerary item
 
 });
