@@ -1,16 +1,22 @@
-$(".add").on('click', function(){
-	var $addButton = $(this);
-	var $category = $addButton.attr('id');
-	var $place = $addButton.prev().find('option:selected').text();
-	var $mapLocation = $addButton.prev().find('option:selected').attr('value');
-	var $mapCoord = $mapLocation.split(',');
+var mapGenerator = function(mapLocation){
+	var $mapCoord = mapLocation.split(',');
 	var $mapCoord0 = Number($mapCoord[0]);
 	var $mapCoord1 = Number($mapCoord[1]);
 	var $mapC = [];
 	$mapC.push($mapCoord0);
 	$mapC.push($mapCoord1);
+	return $mapC;
+}
 
-	var $itineraryItem = '<div class="itinerary-item"><span class="title">' + $place + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>';
+
+$(".add").on('click', function(){
+	var $addButton = $(this);
+	var $category = $addButton.attr('id');
+	var $place = $addButton.prev().find('option:selected').text();
+	var $mapLocation = $addButton.prev().find('option:selected').attr('value');
+	var $mapC = mapGenerator($mapLocation);
+	
+	var $itineraryItem = '<div class="itinerary-item"><span class="title">' + $place + '</span><button value="' +$mapC+'" class="btn btn-xs btn-danger remove btn-circle">x</button></div>';
 	var $listCategory = "#" + $category + "-list";
 
 	function verifyDuplicate() {
@@ -41,4 +47,14 @@ $(".add").on('click', function(){
 		verifyDuplicate();	
 		updateThingMarkers($mapC);
 	}	
+});
+
+
+$(".list-group").delegate('.remove', 'click', function(){
+	var $place = $(this).attr('value');
+	var $mapC = mapGenerator($place);
+	
+	console.log($mapC);
+	$(this).parent().remove();
+
 });
