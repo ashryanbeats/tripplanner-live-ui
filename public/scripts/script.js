@@ -2,6 +2,14 @@ $(".add").on('click', function(){
 	var $addButton = $(this);
 	var $category = $addButton.attr('id');
 	var $place = $addButton.prev().find('option:selected').text();
+	var $mapLocation = $addButton.prev().find('option:selected').attr('value');
+	var $mapCoord = $mapLocation.split(',');
+	var $mapCoord0 = Number($mapCoord[0]);
+	var $mapCoord1 = Number($mapCoord[1]);
+	var $mapC = [];
+	$mapC.push($mapCoord0);
+	$mapC.push($mapCoord1);
+	console.log($mapC);
 	// console.log($("select option:selected").text());
 	// console.log("addButton: ", $addButton);
 	// console.log("category: ", $category);
@@ -14,8 +22,6 @@ $(".add").on('click', function(){
 	// if (!$('#hotel-list').children()) {
 	// 	$($listCategory).append($itineraryItem);	
 	// }
-
-
 	function verifyDuplicate() {
 		var match = false;
 
@@ -32,8 +38,6 @@ $(".add").on('click', function(){
 		}
 	}
 
-
-
 	if ($listCategory === '#hotel-list' && $($listCategory).children().length === 0) {
 		$($listCategory).append($itineraryItem);	
 	}
@@ -43,14 +47,8 @@ $(".add").on('click', function(){
 	else if ($listCategory === '#things-list') {
 		verifyDuplicate();	
 	}
-
-
-
-
-
 	// find the category in the list
 	// append $itineraryItem
+	initialize_gmaps($mapC);
 	
-
-
 });
