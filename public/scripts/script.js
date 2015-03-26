@@ -42,3 +42,9 @@ $(".add").on('click', function(){
 		updateThingMarkers($mapC);
 	}	
 });
+
+
+$(".list-group").delegate('.remove', 'click', function(){
+
+	$(this).parent().remove();
+});
