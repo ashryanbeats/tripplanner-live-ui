@@ -13,6 +13,7 @@ router.get('/', function (req, res, next){
   // `.all` waits for all promises to resolve,
   // `.spread` spreads results over parameters
   bluebird.all(promises).spread(function(hotels, things, cafes){
+    console.log(hotels);
     res.render('index', {
       hotels: hotels,
       thingsToDo: things,
