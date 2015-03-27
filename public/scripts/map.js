@@ -1,6 +1,8 @@
 var map;
 var restaurantLocations = [];
 var thingToDoLocations = [];
+var foodIconArray = [];
+var thingsIconArray = [];
 
 function initialize_gmaps() {
   // initialize new google maps LatLng object
@@ -94,61 +96,56 @@ function updateFoodMarkers(location) {
   // add new location to an array
   restaurantLocations.push(location);
 
-  restaurantLocations.forEach(function (loc) {
-    drawLocation(loc, {
-      icon: '/images/restaurant.png'
-    });
-  });
+  var newLocation = restaurantLocations[restaurantLocations.length - 1];
+
+  drawLocation(newLocation, {icon: '/images/restaurant.png'}, foodIconArray);
 }
 
 function updateThingMarkers(location) {
   // add new location to an array
   thingToDoLocations.push(location);
 
-  thingToDoLocations.forEach(function (loc) {
-    drawLocation(loc, {
-      icon: '/images/star-3.png'
-    });
-  });
+  var newLocation = thingToDoLocations[thingToDoLocations.length - 1];
+
+  drawLocation(newLocation, {icon: '/images/star-3.png'}, thingsIconArray);
 }
 
-function drawLocation (location, opts) {
-  if (typeof opts !== 'object') opts = {};
+function drawLocation (location, opts, iconArray) {
   opts.position = new google.maps.LatLng(location[0], location[1]);
   opts.map = map;
   var marker = new google.maps.Marker(opts);
   marker.setMap(map);
+  iconArray.push(marker);
 }
 
-function removeArray(ItemArray, num){
-  console.log("itemArray: ",ItemArray);
-  console.log("num: ",num);
-  console.log("itemArray[num]: ", ItemArray[num]);
+function removeIcon(ItemArray, num){
+  var removeMarker = ItemArray[num];
+  console.log("HI", ItemArray);
+  removeMarker.setMap(null);
   var arr = ItemArray.filter(function(el){
     return el!==ItemArray[num];
   });
   return arr;
 }
 
+function removeItinerary(ItemArray, num){
+  var arr = ItemArray.filter(function(el){
+    return el!==ItemArray[num];
+  });
+  return arr;
+}
+
+
 function removeHotelMarker(location) {  //NEED TO UPDATE
   marker.setMap(null);
 }
 
-function removeFoodMarkers(mapIndex) { //NEED TO UPDATE 
-
-  // var removeLocation = restaurantLocations.indexOf(location);
-  restaurantLocations = removeArray(restaurantLocations, mapIndex);
-  return restaurantLocations;
-  // return newArray;
+function removeFoodMarkers(mapIndex, $mapC) { //NEED TO UPDATE 
+  restaurantLocations = removeItinerary(restaurantLocations, mapIndex);
+  foodIconArray = removeIcon(foodIconArray, mapIndex);
 }
 
-// function removeThingMarkers(location) { //NEED TO UPDATE
-//   // add new location to an array
-//   thingToDoLocations.push(location);
-
-//   thingToDoLocations.forEach(function (loc) {
-//     drawLocation(loc, {
-//       icon: '/images/star-3.png'
-//     });
-//   });
-// }
+function removeThingMarkers(mapIndex, $mapC) { //NEED TO UPDATE 
+  thingToDoLocations = removeItinerary(thingToDoLocations, mapIndex);
+  thingsIconArray = removeIcon(thingsIconArray, mapIndex);
+}

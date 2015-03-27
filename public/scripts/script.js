@@ -72,14 +72,13 @@ $(".list-group").delegate('.remove', 'click', function(){
 	else if($(this).parent().parent().attr('id')==='food-list'){
 		var mapIndex = ($(this).parent().index());//index num
 		$(this).parent().remove();	
-		// var mapIndex = matchLocation($mapC, restaurantLocations); //returns index num	
-		removeFoodMarkers(mapIndex);
+		removeFoodMarkers(mapIndex, $mapC);
 
 	}
 	else if($(this).parent().parent().attr('id')==='things-list'){
+		var thingIndex = ($(this).parent().index());
 		$(this).parent().remove();	
-		// var mapIndex = matchLocation($mapC, thingToDoLocations); //returns index num	
-		// removeFoodMarkers(mapIndex);
+		removeThingMarkers(thingIndex, $mapC);
 
 	}
 	// $(this).parent().remove(); //removes button & itinerary item
