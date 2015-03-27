@@ -6,7 +6,11 @@ var mapGenerator = function(mapLocation){ //converts place string coordinates in
 	$mapC.push($mapCoord0);
 	$mapC.push($mapCoord1);
 	return $mapC;
-}
+};
+
+var foodCounter = -1;
+var thingCounter = -1;
+
 
 
 $(".add").on('click', function(){
@@ -19,8 +23,9 @@ $(".add").on('click', function(){
 	var $itineraryItem = '<div class="itinerary-item"><span class="title">' + $place + '</span><button value="' +$mapC+'" class="btn btn-xs btn-danger remove btn-circle">x</button></div>';
 	var $listCategory = "#" + $category + "-list";
 
-	function verifyDuplicate() { //confirms if already added place
+	function verifyDuplicate(counter) { //confirms if already added place
 		var match = false;
+
 
 		$($listCategory).children().each(function() { 
 			var span = $(this).find('span').text();
@@ -31,7 +36,10 @@ $(".add").on('click', function(){
 		});
 
 		if (match === false) {
-			$($listCategory).append($itineraryItem);	
+			
+			$($listCategory).append($itineraryItem);
+			// var $divIndex = $('.itinerary-item').last();
+			// $($divIndex).attr({arrayIndex: '' + counter + ''});
 		}
 	}
 
@@ -40,20 +48,40 @@ $(".add").on('click', function(){
 		updateHotelMarker($mapC);	//adds hotel location - only one per day & no duplicates
 	}
 	else if ($listCategory === '#food-list' && $($listCategory).children().length < 3) {
-		verifyDuplicate();
+		foodCounter ++;
+		verifyDuplicate(foodCounter);
 		updateFoodMarkers($mapC); //adds restaurants - only 3 per day & no duplicates
 	}
 	else if ($listCategory === '#things-list') {
-		verifyDuplicate();	
+		thingCounter ++;
+		verifyDuplicate(thingCounter);	
 		updateThingMarkers($mapC); //adds things to do - no duplicates
 	}	
 });
 
 
 $(".list-group").delegate('.remove', 'click', function(){
-	var $place = $(this).attr('value');
-	var $mapC = mapGenerator($place);
+	var $place = $(this).attr('value'); //coordinates
 
-	$(this).parent().remove(); //removes button & itinerary item
+	var $mapC = mapGenerator($place);
+	if($(this).parent().parent().attr('id')==='hotel-list'){
+		$(this).parent().remove();
+		// removeHotelMarker($mapC);
+
+	}
+	else if($(this).parent().parent().attr('id')==='food-list'){
+		var mapIndex = ($(this).parent().index());//index num
+		$(this).parent().remove();	
+		// var mapIndex = matchLocation($mapC, restaurantLocations); //returns index num	
+		removeFoodMarkers(mapIndex);
+
+	}
+	else if($(this).parent().parent().attr('id')==='things-list'){
+		$(this).parent().remove();	
+		// var mapIndex = matchLocation($mapC, thingToDoLocations); //returns index num	
+		// removeFoodMarkers(mapIndex);
+
+	}
+	// $(this).parent().remove(); //removes button & itinerary item
 
 });
