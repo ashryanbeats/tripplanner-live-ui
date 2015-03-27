@@ -120,38 +120,35 @@ function drawLocation (location, opts) {
   marker.setMap(map);
 }
 
-function removeLocation (location, opts) { //NEED TO UPDATE
-  if (typeof opts !== 'object') opts = {};
-  opts.position = new google.maps.LatLng(location[0], location[1]);
-  opts.map = map;
-  var marker = new google.maps.Marker(opts);
-  marker.setMap(null);
+function removeArray(ItemArray, num){
+  console.log("itemArray: ",ItemArray);
+  console.log("num: ",num);
+  console.log("itemArray[num]: ", ItemArray[num]);
+  var arr = ItemArray.filter(function(el){
+    return el!==ItemArray[num];
+  });
+  return arr;
 }
 
 function removeHotelMarker(location) {  //NEED TO UPDATE
-  drawLocation(location, {
-    icon: '/images/lodging_0star.png'
-  });
+  marker.setMap(null);
 }
 
-function removeFoodMarkers(location) { //NEED TO UPDATE
-  // add new location to an array
-  restaurantLocations.push(location);
+function removeFoodMarkers(mapIndex) { //NEED TO UPDATE 
 
-  restaurantLocations.forEach(function (loc) {
-    drawLocation(loc, {
-      icon: '/images/restaurant.png'
-    });
-  });
+  // var removeLocation = restaurantLocations.indexOf(location);
+  restaurantLocations = removeArray(restaurantLocations, mapIndex);
+  return restaurantLocations;
+  // return newArray;
 }
 
-function removeThingMarkers(location) { //NEED TO UPDATE
-  // add new location to an array
-  thingToDoLocations.push(location);
+// function removeThingMarkers(location) { //NEED TO UPDATE
+//   // add new location to an array
+//   thingToDoLocations.push(location);
 
-  thingToDoLocations.forEach(function (loc) {
-    drawLocation(loc, {
-      icon: '/images/star-3.png'
-    });
-  });
-}
+//   thingToDoLocations.forEach(function (loc) {
+//     drawLocation(loc, {
+//       icon: '/images/star-3.png'
+//     });
+//   });
+// }
